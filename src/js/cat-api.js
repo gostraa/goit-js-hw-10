@@ -1,39 +1,33 @@
-export const refs = {
-    selectElem: document.querySelector(".breed-select"),
-    loader: document.querySelector(".loader"),
-    error: document.querySelector(".error"),
-    displayElem: document.querySelector(".cat-info"),
 
-};
-
+const BASE_URL = "https://api.thecatapi.com";
 
 export function fetchBreeds() {
-    return fetch("https://api.thecatapi.com/v1/breeds")
+    return fetch(`${BASE_URL}/v1/breeds`)
         .then(response => {
-            if (!response.ok) throw new Error(response.status)
+            if (!response.ok) throw new Error(response.status);
             return response.json()
         })
 }
 
-export function createOptions(response) {
-    let optionMarkup = response.map(({ id, name }) =>
-        `<option value="${id}">${name}</option>`);
-    refs.selectElem.innerHTML = optionMarkup.join('');
-}
 
 
 
  export function findCatById(id) {
-      return  fetch(`https://api.thecatapi.com/v1/images/${id}`).then(response => response.json())
+     return fetch(`${BASE_URL}/v1/images/${id}`).then(response =>
+       { if (!response.ok) throw new Error(response.status);
+         return response.json()
+     })
 }
 
 
- export function updateDisplay(object) {
-    const markup = `
-        <img src= "${object.url}"alt="${object.breeds[0].name}" width=300>
-        <h2>${object.breeds[0].name}</h2>
-        <p>Temperament:${object.breeds[0].temperament}</p>
-        <p>${object.breeds[0].description}</p>
-    `;
-   refs.displayElem.innerHTML = markup;
+
+
+  export function fetchCatByBreed(breedId) {
+    return fetch(`${BASE_URL}/v1/images/search?breed_ids=${breedId}`)
+        .then(response => {
+             if (!response.ok) throw new Error(response.status);
+            return response.json()
+        })
+       
 }
+
