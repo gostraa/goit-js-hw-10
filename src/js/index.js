@@ -1,6 +1,7 @@
 
-import { refs, createOptions, findCatById, updateDisplay } from "./cat-api"
+import { refs, createOptions, findCatById, updateDisplay,fetchBreeds } from "./cat-api"
 import SlimSelect from 'slim-select'
+import '/node_modules/slim-select/dist/slimselect.css'
 
 
 
@@ -8,16 +9,15 @@ import SlimSelect from 'slim-select'
 refs.selectElem.addEventListener("change", onSelectChange);
 
 
-(function fetchBreeds() {
-    return fetch("https://api.thecatapi.com/v1/breeds")
-        .then(response => {
-            if (!response.ok) throw new Error(response.status)
-            return response.json().then(response =>createOptions(response));
-        })
+fetchBreeds().then(response => { createOptions(response);
+                new SlimSelect({
+  select: '#selectElement'
+})
+            })
         .catch(error =>
             refs.error.classList.remove("is-hidden")
-         )    
-})()
+         )   
+
 
 
 
